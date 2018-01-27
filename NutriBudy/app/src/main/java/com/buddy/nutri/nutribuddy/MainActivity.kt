@@ -1,10 +1,9 @@
-package com.buddy.nutri.nutribudy
+package com.buddy.nutri.nutribuddy
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageButton
-import android.view.View
 
 class MainActivity : AppCompatActivity()
 {
@@ -14,12 +13,20 @@ class MainActivity : AppCompatActivity()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setuoUI()
+        setupUI()
 
     }
 
-    fun setuoUI()
+    private fun setupUI()
     {
         splashImage = findViewById<ImageButton>(R.id.splashButton) as ImageButton
+
+        splashImage!!.setOnClickListener {
+
+            val intent = Intent(this, CameraActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+
+        }
     }
 }

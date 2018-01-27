@@ -1,4 +1,4 @@
-package com.buddy.nutri.nutribudy
+package com.buddy.nutri.nutribuddy
 
 import org.junit.Test
 

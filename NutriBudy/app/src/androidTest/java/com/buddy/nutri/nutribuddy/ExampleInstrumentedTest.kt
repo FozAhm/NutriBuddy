@@ -1,4 +1,4 @@
-package com.buddy.nutri.nutribudy
+package com.buddy.nutri.nutribuddy
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
