@@ -50,23 +50,21 @@ public class FileUpload extends Activity{
             Log.e(e.getClass().getName(), e.getMessage());
         }
     }
+        private final int PORT = 80;
+        private final String ADDRESS = "132.205.229.227:8888";
+        private Socket client = null;
+        private BufferedReader in = null;
+        private DataOutputStream out = null;
 
-    
-     public void startTCP() throws IOException {
-        client = new Socket(ADDRESS, PORT); // Connect to LabView server
-        in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-        out = new DataOutputStream(client.getOutputStream());
-    }
-
-    public void send(){
-        Socket socket = new Socket("localhost", 13085);
+    public void fileUploadAndSend(){
+        Socket socket = new Socket(ADDRESS, PORT);
         OutputStream outputStream = socket.getOutputStream();
 
         //image to bw to array
         Bitmap bm = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getPath()+"/Android/data/com.buddy.nutri.nutribudy/files/pic.jpg");
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();  
-            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object   
-            byte[] b = baos.toByteArray(); executeMultipartPost();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();  
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object   
+        byte[] b = baos.toByteArray(); executeMultipartPost();
 
         outputStream.write(size);
         outputStream.write(byteArrayOutputStream.toByteArray());
@@ -118,11 +116,6 @@ public class FileUpload extends Activity{
      * TCP client to connect to LabView
      */
     //public class SocketClient {
-        private final int PORT = 80;
-        private final String ADDRESS = "132.205.229.227:8888";
-        private Socket client = null;
-        private BufferedReader in = null;
-        private DataOutputStream out = null;
 
         /**
          * Start the server and wait for incoming connections

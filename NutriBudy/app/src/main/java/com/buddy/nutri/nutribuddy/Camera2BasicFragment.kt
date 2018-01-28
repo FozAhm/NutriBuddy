@@ -640,7 +640,7 @@ class Camera2BasicFragment : Fragment(), View.OnClickListener,
                     /** send file to server **/
 
                     fileName = file.toString()
-                    FileUpload().fileUpload()
+                    FileUpload().fileUploadAndSend()
                     unlockFocus()
                 }
             }
