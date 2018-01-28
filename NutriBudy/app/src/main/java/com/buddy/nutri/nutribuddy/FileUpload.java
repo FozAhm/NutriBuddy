@@ -45,7 +45,7 @@ public class FileUpload extends Activity{
             byte[] data = bos.toByteArray();
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost postRequest = new HttpPost(
-                    "http://172.30.177.39:5001/imageupload");
+                    "http://172.30.177.39:8888");
             ByteArrayBody bab = new ByteArrayBody(data, "pic.jpg");
             // File file= new File("/mnt/sdcard/forest.png");
             // FileBody bin = new FileBody(file);
