@@ -23,7 +23,8 @@ class MainActivity : AppCompatActivity()
 
         splashImage!!.setOnClickListener {
 
-            val intent = Intent(this, CameraActivity::class.java)
+            //val intent = Intent(this, CameraActivity::class.java)
+            val intent = Intent(this, FrescoActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
 
