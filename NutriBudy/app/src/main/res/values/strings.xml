@@ -6,8 +6,7 @@
     <string name="camera_error">This device doesn\'t support Camera2 API.</string>
     <string name="intro_message">
         <![CDATA[
-            This sample demonstrates the basic use of Camera2 API. Check the source code to see how
-            you can display camera preview and take pictures.
+            NutriBuddy camera system will take a picture for you and using Watson API it will let you know what is healthy and what is not.
         ]]>
     </string>
 </resources>
