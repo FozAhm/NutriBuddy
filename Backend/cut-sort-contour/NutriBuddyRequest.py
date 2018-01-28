@@ -16,6 +16,7 @@ def watsonRequest(path , key, classifier):  #path to be properly escaped (\\)
                 'threshold': 0.6
             })
         )
+        #sends photos out to be contoured with right color
         if classes['images'][0]['classifiers'][0]['classes'][0]['class'] == "banana" or \
             classes['images'][0]['classifiers'][0]['classes'][0]['class'] ==  "tomato" or \
             classes['images'][0]['classifiers'][0]['classes'][0]['class'] == "broccoli":
