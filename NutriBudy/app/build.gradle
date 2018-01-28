@@ -13,6 +13,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        useLibrary 'org.apache.http.legacy'
+
     }
     buildTypes {
         release {
@@ -20,14 +23,36 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        //exclude 'META-INF/LICENSE'
+        //exclude 'META-INF/LICENSE.txt'
+        ///exclude 'META-INF/license.txt'
+       // exclude 'META-INF/NOTICE'
+       // exclude 'META-INF/NOTICE.txt'
+       // exclude 'META-INF/notice.txt'
+        //exclude 'META-INF/ASL2.0'
+        exclude 'org/apache/http/version.properties'
+        exclude 'org/apache/http/client/version.properties'
+        //exclude 'org/apache/http/entity/mime/version.properties'
+        //exclude 'android/databinding/DataBinderMapper.java'
+        //exclude 'android/databinding/DataBindingComponent.java'
+        //exclude 'android/databinding/DynamicUtil.java'
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.9.1'
+    implementation('org.apache.httpcomponents:httpmime:4.5.5') {
+        exclude module: 'httpclient'
+    }
+    implementation group: 'cz.msebera.android' , name: 'httpclient', version: '4.4.1.1'
 }

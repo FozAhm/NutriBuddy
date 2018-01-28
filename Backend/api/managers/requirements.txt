@@ -1,0 +1,8 @@
+flask
+flask_restplus
+flask_cors
+apis
+Werkzeug
+requests
+neo4j-driver
+blinker

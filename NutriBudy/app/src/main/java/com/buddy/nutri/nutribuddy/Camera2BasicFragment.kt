@@ -1,24 +1,5 @@
 package com.buddy.nutri.nutribuddy
 
-/**
- * Created by Coeurl on 2018-01-27.
- */
-/*
- * Copyright 2017 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
@@ -39,9 +20,7 @@ import android.hardware.camera2.CaptureRequest
 import android.hardware.camera2.CaptureResult
 import android.hardware.camera2.TotalCaptureResult
 import android.media.ImageReader
-import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
+import android.os.*
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
@@ -53,12 +32,19 @@ import android.view.Surface
 import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
-import java.io.File
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import java.io.*
 import java.util.Arrays
 import java.util.Collections
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
+
+
+val myIp: String = "http://172.30.177.39:5001"
+var fileName: String? = null
+
 
 class Camera2BasicFragment : Fragment(), View.OnClickListener,
         ActivityCompat.OnRequestPermissionsResultCallback {
@@ -331,6 +317,8 @@ class Camera2BasicFragment : Fragment(), View.OnClickListener,
 
                 val map = characteristics.get(
                         CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP) ?: continue
+
+                // TODO: change image size here
 
                 // For still image captures, we use the largest available size.
                 val largest = Collections.max(
@@ -648,6 +636,11 @@ class Camera2BasicFragment : Fragment(), View.OnClickListener,
                                                 result: TotalCaptureResult) {
                     activity.showToast("Saved: $file")
                     Log.d(TAG, file.toString())
+
+                    /** send file to server **/
+
+                    fileName = file.toString()
+                    FileUpload().fileUpload()
                     unlockFocus()
                 }
             }
@@ -662,7 +655,43 @@ class Camera2BasicFragment : Fragment(), View.OnClickListener,
         }
 
     }
+/*
+    /**
+     * Uploading the file to server
+     */
+    internal inner class sendFile : AsyncTask<Void, Int, String>() {
 
+        /* override fun onPreExecute() {
+            super.onPreExecute()
+        }*/
+
+        override fun doInBackground(vararg params: Void): String {
+            return uploadPhoto()
+        }
+
+        private fun uploadPhoto(): String {
+            uploadFile()
+
+            return "cool"
+        }
+    }
+
+    fun uploadFile(){
+       val url = "http://172.30.177.39:5001/imageupload"
+        val img = "/storage/emulated/0/Android/data/com.buddy.nutri.nutribudy/files/pic.jpg"
+
+
+
+        // should be a singleton
+var client = OkHttpClient()
+
+var request = Request.Builder()
+                     .url(url)
+                     .build()
+
+
+}
+*/
     /**
      * Unlock the focus. This method should be called when still image capture sequence is
      * finished.
