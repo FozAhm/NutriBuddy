@@ -4,6 +4,13 @@ package com.buddy.nutri.nutribuddy;
         import java.io.ByteArrayOutputStream;
         import java.io.InputStreamReader;
 
+        import java.io.BufferedReader;
+        import java.io.DataOutputStream;
+        import java.io.IOException;
+        import java.io.InputStreamReader;
+        import java.io.OutputStream;
+        import java.net.Socket;
+
         import org.apache.http.HttpResponse;
         import org.apache.http.client.HttpClient;
         import org.apache.http.client.methods.HttpPost;
@@ -26,6 +33,8 @@ package com.buddy.nutri.nutribuddy;
         import java.io.IOException;
         import java.io.InputStreamReader;
         import java.net.Socket;
+
+        import cz.msebera.android.httpclient.client.ClientProtocolException;
 
 public class FileUpload extends Activity{
     Bitmap bm;
@@ -51,29 +60,37 @@ public class FileUpload extends Activity{
         }
     }
         private final int PORT = 80;
-        private final String ADDRESS = "132.205.229.227:8888";
+        private final String ADDRESS = "132.205.229.227";
         private Socket client = null;
         private BufferedReader in = null;
         private DataOutputStream out = null;
 
-    public void fileUploadAndSend(){
-        Socket socket = new Socket(ADDRESS, PORT);
+    public void fileUploadAndSend() throws IOException, ClientProtocolException {
+        Socket socket = new Socket("localhost", 13085);
         OutputStream outputStream = socket.getOutputStream();
 
         //image to bw to array
         Bitmap bm = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getPath()+"/Android/data/com.buddy.nutri.nutribudy/files/pic.jpg");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();  
         bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object   
-        byte[] b = baos.toByteArray(); executeMultipartPost();
+        byte[] size = baos.toByteArray();
+        //executeMultipartPost();
 
         outputStream.write(size);
-        outputStream.write(byteArrayOutputStream.toByteArray());
+        outputStream.write(baos.toByteArray());
         outputStream.flush();
         System.out.println("Flushed: " + System.currentTimeMillis());
 
-        Thread.sleep(120000);
-        System.out.println("Closing: " + System.currentTimeMillis());
-        socket.close();
+        try {
+            Thread.sleep(120000);
+            System.out.println("Closing: " + System.currentTimeMillis());
+            socket.close();
+        }
+
+         catch (InterruptedException e) {
+            // Restore the interrupted status
+            Thread.currentThread().interrupt();
+        }
         }
 
     public void executeMultipartPost() throws Exception {
