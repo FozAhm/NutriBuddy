@@ -37,12 +37,46 @@ public class FileUpload extends Activity{
         try {
             // bm = BitmapFactory.decodeResource(getResources(),
             // R.drawable.forest);
-            bm = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getPath()+"/Android/data/com.buddy.nutri.nutribudy/files/pic.jpg");
-            executeMultipartPost();
-        } catch (Exception e) {
+            // bm = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getPath()+"/Android/data/com.buddy.nutri.nutribudy/files/pic.jpg");
+            
+            
+            Bitmap bm = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getPath()+"/Android/data/com.buddy.nutri.nutribudy/files/pic.jpg");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();  
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object   
+            byte[] b = baos.toByteArray(); executeMultipartPost();
+        } 
+        
+        catch (Exception e) {
             Log.e(e.getClass().getName(), e.getMessage());
         }
     }
+
+    
+     public void startTCP() throws IOException {
+        client = new Socket(ADDRESS, PORT); // Connect to LabView server
+        in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+        out = new DataOutputStream(client.getOutputStream());
+    }
+
+    public void send(){
+        Socket socket = new Socket("localhost", 13085);
+        OutputStream outputStream = socket.getOutputStream();
+
+        //image to bw to array
+        Bitmap bm = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getPath()+"/Android/data/com.buddy.nutri.nutribudy/files/pic.jpg");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();  
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object   
+            byte[] b = baos.toByteArray(); executeMultipartPost();
+
+        outputStream.write(size);
+        outputStream.write(byteArrayOutputStream.toByteArray());
+        outputStream.flush();
+        System.out.println("Flushed: " + System.currentTimeMillis());
+
+        Thread.sleep(120000);
+        System.out.println("Closing: " + System.currentTimeMillis());
+        socket.close();
+        }
 
     public void executeMultipartPost() throws Exception {
         try {
@@ -51,7 +85,7 @@ public class FileUpload extends Activity{
             byte[] data = bos.toByteArray();
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost postRequest = new HttpPost(
-                    "http://172.30.177.39:8888");
+                    "http://132.205.230.22:8888");
             ByteArrayBody bab = new ByteArrayBody(data, "pic.jpg");
             // File file= new File("/mnt/sdcard/forest.png");
             // FileBody bin = new FileBody(file);
@@ -84,8 +118,8 @@ public class FileUpload extends Activity{
      * TCP client to connect to LabView
      */
     //public class SocketClient {
-        private final int PORT = 6123;
-        private final String ADDRESS = "132.205.230.22:8888";
+        private final int PORT = 80;
+        private final String ADDRESS = "132.205.229.227:8888";
         private Socket client = null;
         private BufferedReader in = null;
         private DataOutputStream out = null;
@@ -99,46 +133,12 @@ public class FileUpload extends Activity{
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             out = new DataOutputStream(client.getOutputStream());
         }
-
-        /**
-         * Receive message from the server
-         * @return
-         */
-        public String getMessage() {
-            if (client != null) {
-                try {
-                    String fromServer = "";
-                    String line;
-                    while ((line = in.readLine()) != null) {
-                        fromServer = line;
-                        System.out.println("Server: " + fromServer);
-                    }
-                    return fromServer;
-                } catch(IOException e) {
-                    System.err.println("Failed to get: " + e.getMessage());
-                }
-            }
-            System.err.println("Error: Client is null when message was received");
-            return null;
-        }
-
         /**
          * Send a message to the server
          * @param msg
          */
-        public void sendMessage(String msg) {
-            if(client != null) {
-                try {
-                    // Connected, so try sending a message to the server
-                    out.writeUTF("Hi");
-                } catch (IOException e) {
-                    System.out.println("Failed to send " + e.getMessage());
-                }
-            } else {
-                // Not connected to the server
-                System.err.println("Send message failed: Client not connected.");
-            }
-        }
+        // public class Send {
+
     }
 
 //}
