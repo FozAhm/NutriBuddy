@@ -1,6 +1,9 @@
 import NutriBuddyRequest
 import cv2
 import sys
+# Python script that takes an input with 4 photos :
+# python split_send.py C:\\Users\\alien\\Downloads\\27536889_1348932631879392_115959185_o.jpg
+
 
 first_arg = sys.argv[1]
 
@@ -18,12 +21,6 @@ def splitsend(path = first_arg):  #path to be properly escaped (\\)
     im4= img[height/2:height, width/2:width] #bottom right
     cv2.imwrite("tmp\\im4.jpg",im4)
 
-    # cv2.namedWindow('image',cv2.WINDOW_NORMAL)
-    # cv2.resizeWindow('image', 600,600)
-    # cv2.imshow("image", im1)
-    # cv2.waitKey(0)
-
-
     #sends images to 4 different instances of watson
     file = open('API_keys.txt',"r")
     contents = file.readlines()
@@ -33,7 +30,6 @@ def splitsend(path = first_arg):  #path to be properly escaped (\\)
         path = "tmp\\im" + str(i) + ".jpg"   
         NutriBuddyRequest.watsonRequest(path, elements[0],elements[1])
         i = i +1
-
     print("success")
 
 if __name__ == '__main__':

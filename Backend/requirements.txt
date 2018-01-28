@@ -5,3 +5,10 @@ apis
 Werkzeug
 requests
 neo4j-driver
+
+
+# curt-sort-contour:
+watson_developer_cloud
+numpy
+cv2
+json
